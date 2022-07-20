@@ -27,7 +27,7 @@ class Product(models.Model):
     manufacturer = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.title
@@ -51,3 +51,4 @@ class PurchaseProduct(models.Model):
 
     def __str__(self):
         return str(self.purchase) + '-' + str(self.product)
+
