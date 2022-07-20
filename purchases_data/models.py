@@ -40,8 +40,14 @@ class Purchase(models.Model):
     datetime = models.DateTimeField()
     total_bill = models.DecimalField(max_digits=15, decimal_places=2)
 
+    def __str__(self):
+        return str(self.user) + '-' + self.store_name + '-' + str(self.datetime)
+
 
 class PurchaseProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     purchase = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING)
     quantity = models.FloatField()
+
+    def __str__(self):
+        return str(self.purchase) + '-' + str(self.product)
