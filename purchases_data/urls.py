@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import home
 from rest_framework import routers
-from .views import PurchaseViewSet  
+from .views import PurchaseViewSet  , BillViewSet
+
 
 router = routers.DefaultRouter()
 router.register('purchases', PurchaseViewSet)
@@ -9,4 +9,5 @@ router.register('purchases', PurchaseViewSet)
 
 
 urlpatterns = [
+    path("token/",BillViewSet.as_view({'post': 'post', "get":"get"}))
 ] + router.urls
