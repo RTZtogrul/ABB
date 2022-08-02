@@ -2,16 +2,11 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, blank=True, unique=True)
-    mobile = PhoneNumberField(unique=True)
-    birthdate = models.DateField()
-    password = models.CharField(max_length=100)
+class Person(models.Model):
+    FIN = models.CharField(verbose_name="Fin", max_length=7, default='FIN_UNKNOWN')
 
     def __str__(self):
-        return self.name + ' ' + self.surname
+        return self.FIN
 
 
 class Category(models.Model):
@@ -34,7 +29,7 @@ class Product(models.Model):
 
 
 class Purchase(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Person, on_delete=models.DO_NOTHING)
     store_name = models.CharField(max_length=50)
     store_address = models.CharField(max_length=150)
     datetime = models.DateTimeField()
