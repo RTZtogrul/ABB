@@ -18,6 +18,7 @@ class PurchaseDoc:
     user_FIN: str  # FIN code of user that made the purchase / scanned the QR - code
     store_name: str
     store_address: str
+    taxpayer_name: str
     date: datetime.date
     time: datetime.time
     products: list  # [(product name: str, amount: float, price: float)), (...), ...]

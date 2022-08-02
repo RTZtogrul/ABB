@@ -2,7 +2,7 @@ from django.db import models
 
 
 class User(models.Model):
-    FIN = models.CharField(verbose_name="Fin", max_length=7, default='FIN_UNKNOWN')
+    FIN = models.CharField(verbose_name="Fin", max_length=7, default='FIN_UNKNOWN', unique=True)
 
     def __str__(self):
         return self.FIN
@@ -14,6 +14,17 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Store(models.Model):
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=150)
+    taxpayer_name = models.CharField(max_length=50, unique=True)
+    type = models.CharField(max_length=50, default=None)
+    is_manufacturer = models.BooleanField()
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -29,8 +40,7 @@ class Product(models.Model):
 
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    store_name = models.CharField(max_length=50)
-    store_address = models.CharField(max_length=150)
+    store = models.ForeignKey(Store, default=None, on_delete=models.DO_NOTHING)
     date = models.DateField()
     time = models.TimeField()
     total_price = models.DecimalField(max_digits=15, decimal_places=2)
@@ -38,12 +48,12 @@ class Purchase(models.Model):
     total_payed = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
-        return str(self.user) + '-' + self.store_name + '-' + str(self.date) + '-' + str(self.time)
+        return str(self.user) + '-' + self.store.name + '-' + str(self.date) + '-' + str(self.time)
 
 
 class PurchaseUnit(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     purchase = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     amount = models.FloatField()
 
     def __str__(self):
