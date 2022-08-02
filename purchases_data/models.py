@@ -51,4 +51,3 @@ class PurchaseProduct(models.Model):
 
     def __str__(self):
         return str(self.purchase) + '-' + str(self.product)
-

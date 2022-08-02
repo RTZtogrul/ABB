@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Purchase
 
+
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
@@ -13,5 +14,3 @@ class PurchaseSerializer(serializers.ModelSerializer):
             'datetime': {'required': True},
             'total_bill': {'required': True},
         }
-    
-    
