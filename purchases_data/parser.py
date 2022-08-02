@@ -1,14 +1,14 @@
 from models import User, Purchase, Store, Product, PurchaseUnit
-from requests_html import HTMLSession
 from PurchaseDoc import PurchaseDoc
 from ML import classifiers
+import requests_html
 import datetime
 import re
 
 
 def render_js(fiscal_id):
     url = 'https://monitoring.e-kassa.gov.az/#/index?doc=' + fiscal_id
-    session = HTMLSession()
+    session = requests_html.HTMLSession()
     r = session.get(url)
     r.html.render()
     text = r.html.text[22134:len(r.html.text) - 3780]
