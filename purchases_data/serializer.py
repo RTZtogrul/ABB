@@ -9,8 +9,10 @@ class PurchaseSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
         extra_kwargs = {
             'user': {'required': True},
-            'store_name': {'required': True},
-            'store_address': {'required': True},
-            'datetime': {'required': True},
-            'total_bill': {'required': True},
+            'store': {'required': True},
+            'date': {'required': True},
+            'time': {'required': True},
+            'total_price': {'required': True},
+            'discount': {'required': True},
+            'total_payed': {'required': True},
         }
