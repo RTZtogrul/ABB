@@ -33,13 +33,16 @@ def parse(user_FIN, fiscalID):
                           re.MULTILINE)
     total_price = float(re.findall(r'(?:Cəmi\n)(.*?)(?:\n)', render, re.MULTILINE)[1])
 
-    total_payed = float(re.findall(r'(?:Nağdsız:\n)(.*?)(?:\n)', render, re.MULTILINE)[0]) + \
-                  float(re.findall(r'(?:Nağd:\n)(.*?)(?:\n)', render, re.MULTILINE)[0])
+    cashless = bool(float(re.findall(r'(?:Nağd:\n)(.*?)(?:\n)', render, re.MULTILINE)[0]) == 0)
+
+    total_payed = float(re.findall(r'(?:Nağdsız:\n)(.*?)(?:\n)', render, re.MULTILINE)[0]) if cashless \
+        else float(re.findall(r'(?:Nağd:\n)(.*?)(?:\n)', render, re.MULTILINE)[0])
 
     discount = total_price - total_payed
 
-    return PurchaseDoc(user_FIN, store_name, store_address, taxpayer_name, date, time, products, total_price, discount,
-                       total_payed)
+    return PurchaseDoc(user_FIN=user_FIN, store_name=store_name, store_address=store_address,
+                       taxpayer_name=taxpayer_name, date=date, time=time, products=products, total_price=total_price,
+                       discount=discount, total_payed=total_payed, cashless=cashless)
 
 
 def write_to_db(purchase_doc: PurchaseDoc):

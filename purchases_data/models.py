@@ -46,6 +46,7 @@ class Purchase(models.Model):
     total_price = models.DecimalField(max_digits=15, decimal_places=2)
     discount = models.DecimalField(max_digits=15, decimal_places=2)
     total_payed = models.DecimalField(max_digits=15, decimal_places=2)
+    cashless = models.BooleanField()
 
     def __str__(self):
         return str(self.user) + '-' + self.store.name + '-' + str(self.date) + '-' + str(self.time)
