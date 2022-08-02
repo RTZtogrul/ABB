@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Person(models.Model):
+class User(models.Model):
     FIN = models.CharField(verbose_name="Fin", max_length=7, default='FIN_UNKNOWN')
 
     def __str__(self):
@@ -28,20 +28,23 @@ class Product(models.Model):
 
 
 class Purchase(models.Model):
-    user = models.ForeignKey(Person, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     store_name = models.CharField(max_length=50)
     store_address = models.CharField(max_length=150)
-    datetime = models.DateTimeField()
-    total_bill = models.DecimalField(max_digits=15, decimal_places=2)
+    date = models.DateField()
+    time = models.TimeField()
+    total_price = models.DecimalField(max_digits=15, decimal_places=2)
+    discount = models.DecimalField(max_digits=15, decimal_places=2)
+    total_payed = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
-        return str(self.user) + '-' + self.store_name + '-' + str(self.datetime)
+        return str(self.user) + '-' + self.store_name + '-' + str(self.date) + '-' + str(self.time)
 
 
-class PurchaseProduct(models.Model):
+class PurchaseUnit(models.Model):
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     purchase = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING)
-    quantity = models.FloatField()
+    amount = models.FloatField()
 
     def __str__(self):
         return str(self.purchase) + '-' + str(self.product)
