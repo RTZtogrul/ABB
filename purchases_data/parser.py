@@ -1,5 +1,5 @@
-from models import User, Purchase, Store, Product, PurchaseUnit
-from PurchaseDoc import PurchaseDoc
+from .models import User, Purchase, Store, Product, PurchaseUnit
+from .PurchaseDoc import PurchaseDoc
 from ML import classifiers
 import requests_html
 import datetime
