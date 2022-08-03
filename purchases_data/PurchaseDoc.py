@@ -5,17 +5,17 @@ import datetime
 @dataclass
 class PurchaseDoc:
     """
-        user_FIN: str  # FIN code of user that made the purchase / scanned the QR - code
-        store_name: str
-        store_address: str
-        taxpayer_name: str
-        date: datetime.date
-        time: datetime.time
-        products: list  # [(product name: str, amount: float, price: float)), (...), ...]
-        total_price: float  # sum(amount*price) for every product
-        discount: float  # by default is set to 0, used only in case there is any discount
-        total_payed: float  # total_price - discount
-        cashless: bool  # indicates whether the payment was cashless
+        user_FIN: str FIN code of user that made the purchase / scanned the QR - code\n
+        store_name: str\n
+        store_address: str\n
+        taxpayer_name: str\n
+        date: datetime.date\n
+        time: datetime.time\n
+        products: list [(product name: str, amount: float, price: float)), (...), ...]\n
+        total_price: float sum(amount*price) for every product\n
+        discount: float by default is set to 0, used only in case there is any discount\n
+        total_payed: float total_price - discount\n
+        cashless: bool indicates whether the payment was cashless\n
     """
     user_FIN: str  # FIN code of user that made the purchase / scanned the QR - code
     store_name: str
@@ -33,6 +33,7 @@ class PurchaseDoc:
         return f'User FIN: {self.user_FIN}\n' \
                f'Store name: {self.store_name}\n' \
                f'Store address: {self.store_address}\n' \
+               f'Taxpayer name: {self.taxpayer_name}\n' \
                f'Date: {self.date}\n' \
                f'Time: {self.time}\n' \
                f'Products:\n' \

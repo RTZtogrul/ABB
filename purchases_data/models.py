@@ -2,14 +2,15 @@ from django.db import models
 
 
 class User(models.Model):
-    FIN = models.CharField(verbose_name="Fin", max_length=7, default='FIN_UNKNOWN', unique=True)
+    FIN = models.CharField(verbose_name='Fərdi İdentifikasiya Nömrəsi (FİN)', max_length=7, default='FIN_UNKNOWN',
+                           unique=True)
 
     def __str__(self):
         return self.FIN
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(verbose_name='Category Title', max_length=50, unique=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
