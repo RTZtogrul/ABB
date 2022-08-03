@@ -1,5 +1,5 @@
 from .models import User, Purchase, Store, Product, PurchaseUnit
-from .PurchaseDoc import PurchaseDoc
+from PurchaseDoc import PurchaseDoc
 from ML import classifiers
 import requests_html
 import datetime
@@ -12,6 +12,7 @@ def render_js(fiscal_id):
     r = session.get(url)
     r.html.render()
     text = r.html.text[22134:len(r.html.text) - 3780]
+    session.close()
     try:
         assert text != ''
         return text
@@ -24,13 +25,13 @@ def parse(user_FIN, fiscalID):
 
     store_name = (re.findall(r'(?:TS adı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
     store_address = (re.findall(r'(?:TS ünvanı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
-    taxpayer_name = (re.findall(r'(?:VÖ ADI: ")(.*?)(?:"\n)', render, re.MULTILINE)[0]).strip()
+    taxpayer_name = (re.findall(r'(?:VÖ ADI:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
     date = datetime.datetime.strptime(re.findall(r'(?:Tarix:)(?:\n)(.*?)(?:\n)', render,
                                                  re.MULTILINE)[0], '%d.%m.%Y').date()
     time = datetime.datetime.strptime(re.findall(r'(?:Saat:)(?:\n)(.*?)(?:\n)', render,
                                                  re.MULTILINE)[0], '%H:%M:%S').time()
-    products = re.findall(r'(.*?)(?:\*ƏDV: 18%\n)\((?:.*?)\)(?:\n)(\d+\.\d*)\n(\d+\.\d*)', render,
-                          re.MULTILINE)
+    products = re.findall(r'(.*?)(?:\*ƏDV: 18%\n)\((?:.*?)\)(?:\n)(\d+\.\d*)\n(\d+\.\d*)', render, re.MULTILINE) + \
+               re.findall(r'(.*?)(?:\*ƏDV: 18%\n)(\d+\.\d*)\n(\d+\.\d*)', render, re.MULTILINE)
     total_price = float(re.findall(r'(?:Cəmi\n)(.*?)(?:\n)', render, re.MULTILINE)[1])
 
     cashless = bool(float(re.findall(r'(?:Nağd:\n)(.*?)(?:\n)', render, re.MULTILINE)[0]) == 0)
