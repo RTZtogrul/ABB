@@ -16,16 +16,13 @@ def render_js(fiscal_ID: str):
     session = requests_html.HTMLSession()
     r = session.get(url)
     r.html.render()
-    text = r.html.text[22134:len(r.html.text) - 3780]
+    text = r.html.text
     session.close()
-    try:
-        assert text != ''
+
+    if 'PDF olaraq yükləyin' in text:
         return text
-    except AssertionError:
+    else:
         return render_js(fiscal_ID)
-    except RecursionError:
-        print('Connection problems, try again later')  # should raise a custom error
-        return
 
 
 def parse_purchase(user_FIN: str, fiscal_ID: str):
@@ -35,7 +32,12 @@ def parse_purchase(user_FIN: str, fiscal_ID: str):
     :param fiscal_ID: Fiscal ID of the purchase
     :return: PurchaseDoc
     """
-    render = render_js(fiscal_ID)
+
+    try:
+        render = render_js(fiscal_ID)
+    except RecursionError:
+        print('Connection failed, try again later')
+        return
 
     store_name = (re.findall(r'(?:TS adı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
     store_address = (re.findall(r'(?:TS ünvanı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
@@ -66,6 +68,13 @@ def write_to_db(purchase_doc: PurchaseDoc):
     :param purchase_doc: PurchaseDoc that contains data to be saved in the database
     :return: None
     """
+
+    try:
+        assert purchase_doc is not None
+    except AssertionError:
+        print('nothing is written into the database')
+        return
+
     user = User.objects.get_or_create(FIN=purchase_doc.user_FIN)[0]
     user.save()
 
