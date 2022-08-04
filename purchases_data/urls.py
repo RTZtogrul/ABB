@@ -6,5 +6,5 @@ router = routers.DefaultRouter()
 router.register('purchases', PurchaseViewSet)
 
 urlpatterns = [
-                  path("token/", BillViewSet.as_view({'post': 'post', "get": "get"}))
+                  path('token/', BillViewSet.as_view({'post': 'post', 'get': 'get'}))
               ] + router.urls

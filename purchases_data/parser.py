@@ -6,13 +6,13 @@ import datetime
 import re
 
 
-def render_js(fiscal_id: str):
+def render_js(fiscal_ID: str):
     """
     Renders HTML and JS from e-kassa for a given Fiscal ID into the string
-    :param fiscal_id: Fiscal ID of the purchase
+    :param fiscal_ID: Fiscal ID of the purchase
     :return: string that contains the electronic receipt data
     """
-    url = 'https://monitoring.e-kassa.gov.az/#/index?doc=' + fiscal_id
+    url = 'https://monitoring.e-kassa.gov.az/#/index?doc=' + fiscal_ID
     session = requests_html.HTMLSession()
     r = session.get(url)
     r.html.render()
@@ -22,20 +22,20 @@ def render_js(fiscal_id: str):
         assert text != ''
         return text
     except AssertionError:
-        return render_js(fiscal_id)
+        return render_js(fiscal_ID)
     except RecursionError:
         print('Connection problems, try again later')  # should raise a custom error
         return
 
 
-def parse(user_FIN: str, fiscalID: str):
+def parse(user_FIN: str, fiscal_ID: str):
     """
     Parses all the important data from e-kassa into a dataclass object
     :param user_FIN: FIN of the user
-    :param fiscalID: Fiscal ID of the purchase
+    :param fiscal_ID: Fiscal ID of the purchase
     :return: PurchaseDoc
     """
-    render = render_js(fiscalID)
+    render = render_js(fiscal_ID)
 
     store_name = (re.findall(r'(?:TS adı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
     store_address = (re.findall(r'(?:TS ünvanı:)(.*?)(?:\n)', render, re.MULTILINE)[0]).strip()
