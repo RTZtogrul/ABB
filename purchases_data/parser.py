@@ -28,7 +28,7 @@ def render_js(fiscal_ID: str):
         return
 
 
-def parse(user_FIN: str, fiscal_ID: str):
+def parse_purchase(user_FIN: str, fiscal_ID: str):
     """
     Parses all the important data from e-kassa into a dataclass object
     :param user_FIN: FIN of the user

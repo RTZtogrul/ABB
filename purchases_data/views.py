@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from .serializer import PurchaseSerializer
 from .models import Purchase
 from rest_framework import viewsets
-from .parser import parse
+from .parser import parse_purchase
 
 
 def home(request):
@@ -17,7 +17,7 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 class BillViewSet(viewsets.ViewSet):
     @staticmethod
     def post(request):
-        print(parse(request.data["user_FIN"], request.data["user_token"]))
+        print(parse_purchase(request.data["user_FIN"], request.data["user_token"]))
         return HttpResponse("succes")
 
     @staticmethod
