@@ -1,4 +1,4 @@
-from purchases_data.models import Store, Product, Category
+from PurchasesData.models import Store, Product, Category
 
 
 def store_type(store: Store):  # to be done
